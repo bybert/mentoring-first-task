@@ -1,15 +1,15 @@
-.user-card {
-  display: grid;
-  grid-template-columns:  300px 1fr;
-  grid-gap: 5px;
-  border: black 1px solid;
-  border-bottom: none;
-  padding: 5px;
-  width: 100dvh;
-  //height: 200px;
+mat-card {
+  width: 380px;
+  background: #b375e8;
+  border: black solid 1px;
 
-  button {
-    width: 200px;
-  }
 }
 
+mat-card-content {
+  margin: 0 auto;
+  text-align: center;
+}
+.user-btn {
+  border: black solid 1px;
+  margin-left: 5px;
+}

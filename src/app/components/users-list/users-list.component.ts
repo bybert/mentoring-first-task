@@ -3,6 +3,7 @@ import {UsersService} from '../../services/users-service'
 import {AsyncPipe, NgForOf} from '@angular/common'
 import {UserCardComponent} from '../user-card/user-card.component'
 import {UsersApiService} from '../../services/users-api-service'
+import {MatButton, MatFabButton, MatMiniFabButton} from '@angular/material/button'
 
 @Component({
   selector: 'app-users-list',
@@ -10,7 +11,10 @@ import {UsersApiService} from '../../services/users-api-service'
   imports: [
     NgForOf,
     UserCardComponent,
-    AsyncPipe
+    AsyncPipe,
+    MatMiniFabButton,
+    MatButton,
+    MatFabButton
   ],
   templateUrl: './users-list.component.html',
   styleUrl: './users-list.component.scss'

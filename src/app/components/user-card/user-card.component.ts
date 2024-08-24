@@ -1,12 +1,15 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core'
 import {User} from '../../data/interfaces/users.interface'
 import {MatFabButton} from '@angular/material/button'
+import {MatCard, MatCardContent} from '@angular/material/card'
 
 @Component({
   selector: 'app-user-card',
   standalone: true,
   imports: [
-    MatFabButton
+    MatFabButton,
+    MatCard,
+    MatCardContent,
   ],
   templateUrl: './user-card.component.html',
   styleUrl: './user-card.component.scss'
