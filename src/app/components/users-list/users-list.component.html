@@ -1,0 +1,9 @@
+  <h2>Список пользователей:</h2>
+
+  <ul style="list-style-type: none ">
+    @for (user of users$ | async; track user.id ) {
+      <li>
+        <app-user-card [user]="user" (deleteUserEvent)="onDeleteUser($event)"></app-user-card>
+      </li>
+    }
+  </ul>

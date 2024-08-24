@@ -1,0 +1,6 @@
+<div class="user-card">
+  <h3> {{ user.id }}. {{ user.name }}</h3>
+  <p><strong>Email:</strong> {{ user.email }}</p>
+  <p><strong>City:</strong> {{ user.address.city }}</p>
+  <button mat-fab extended (click)="onDeleteUser(user)">Delete</button>
+</div>

@@ -1,0 +1,15 @@
+.user-card {
+  display: grid;
+  grid-template-columns:  300px 1fr;
+  grid-gap: 5px;
+  border: black 1px solid;
+  border-bottom: none;
+  padding: 5px;
+  width: 100dvh;
+  //height: 200px;
+
+  button {
+    width: 200px;
+  }
+}
+
