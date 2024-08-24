@@ -3,8 +3,6 @@ import {UsersService} from '../../services/users-service'
 import {AsyncPipe, NgForOf} from '@angular/common'
 import {UserCardComponent} from '../user-card/user-card.component'
 import {UsersApiService} from '../../services/users-api-service'
-import {User} from '../../data/interfaces/users.interface'
-import {Observable} from 'rxjs'
 
 @Component({
   selector: 'app-users-list',

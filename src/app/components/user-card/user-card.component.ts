@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core'
-import {UsersService} from '../../services/users-service'
 import {User} from '../../data/interfaces/users.interface'
 import {MatFabButton} from '@angular/material/button'
 

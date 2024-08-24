@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core'
 import {HttpClient} from '@angular/common/http'
-import {BehaviorSubject, Observable} from 'rxjs'
+import {BehaviorSubject} from 'rxjs'
 import {User} from '../data/interfaces/users.interface'
 import {UsersApiService} from './users-api-service'
 
