@@ -1,24 +1,25 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core'
-import {User} from '../../data/interfaces/users.interface'
-import {MatFabButton} from '@angular/material/button'
-import {MatCard, MatCardContent} from '@angular/material/card'
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core'
+import { User } from '../../data/interfaces/users.interface'
+import { MatButton, MatFabButton } from '@angular/material/button'
+import { MatCard, MatCardContent } from '@angular/material/card'
 
 @Component({
   selector: 'app-user-card',
   standalone: true,
-  imports: [
-    MatFabButton,
-    MatCard,
-    MatCardContent,
-  ],
+  imports: [MatFabButton, MatCard, MatCardContent, MatButton],
   templateUrl: './user-card.component.html',
-  styleUrl: './user-card.component.scss'
+  styleUrl: './user-card.component.scss',
 })
 export class UserCardComponent {
   @Input() user!: User
-  @Output() deleteUserEvent = new EventEmitter<number>()
+  @Output() deleteUserEvent: EventEmitter<number> = new EventEmitter<number>()
+  @Output() editUserEvent: EventEmitter<User> = new EventEmitter<User>()
 
-  onDeleteUser(user: User): void {
+  public onDeleteUser(user: User): void {
     this.deleteUserEvent.emit(user.id)
+  }
+
+  public onEditUser(newUser: User): void {
+    this.editUserEvent.emit(this.user)
   }
 }

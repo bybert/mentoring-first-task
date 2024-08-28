@@ -1,9 +1,16 @@
+<div class="usersList">
+  <button (click)="openAddDialog()" mat-raised-button color="primary">Add User</button>
   <h2>Список пользователей:</h2>
+</div>
 
-  <ul style="list-style-type: none ">
-    @for (user of users$ | async; track user.id ) {
-      <li>
-        <app-user-card [user]="user" (deleteUserEvent)="onDeleteUser($event)"></app-user-card>
-      </li>
-    }
-  </ul>
+<mat-grid-list cols="5" rowHeight="1:1">
+  @for (user of users$ | async; track user.id) {
+    <mat-grid-tile>
+      <app-user-card
+        [user]="user"
+        (deleteUserEvent)="onDeleteUser($event)"
+        (editUserEvent)="openEditDialog($event)">
+      </app-user-card>
+    </mat-grid-tile>
+  }
+</mat-grid-list>

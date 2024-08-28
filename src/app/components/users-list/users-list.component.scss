@@ -1,5 +1,17 @@
-h2 {
-  width: 380px;
-  margin: 20px 40px;
+.usersList {
+  width: 1000px;
+  height: 80px;
+  margin: 0 auto;
+  padding: 20px 10px 10px;
   text-align: center;
+  background-color: #fad85f;
+  box-shadow: 5px 5px 5px darkviolet;
+}
+
+h2 {
+  margin-top: 10px;
+}
+
+mat-grid-list {
+  margin-top: 10px;
 }
