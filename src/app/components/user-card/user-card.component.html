@@ -1,12 +1,11 @@
-<mat-card appearance="outlined">
+<mat-card>
   <mat-card-content>
     <h3>
-      <strong> {{ user.id }}. {{ user.name }}</strong>
+      <strong>{{ user.name }}</strong> <p>(<strong>ID:</strong> {{ user.id }})</p>
     </h3>
     <p><strong>Username:</strong> {{ user.username }}</p>
     <p><strong>Email:</strong> {{ user.email }}</p>
     <p><strong>Phone:</strong> {{ user.phone }}</p>
-    <p><strong>City:</strong> {{ user.address.city }}</p>
     <button
       class="user-btn"
       mat-fab extended

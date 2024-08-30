@@ -1,5 +1,4 @@
-import { Injectable } from '@angular/core'
-import { HttpClient } from '@angular/common/http'
+import { inject, Injectable } from '@angular/core'
 import { BehaviorSubject } from 'rxjs'
 import { User } from '../data/interfaces/users.interface'
 import { UsersApiService } from './users-api-service'
@@ -9,16 +8,18 @@ import { UsersApiService } from './users-api-service'
 })
 export class UsersService {
   private usersSubject$: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([])
+  private userApiService = inject(UsersApiService)
   public readonly users$ = this.usersSubject$.asObservable()
 
-  constructor(
-    private http: HttpClient,
-    private userApiService: UsersApiService
-  ) {}
-
-  setUsers(users: User[]) {
-    return this.usersSubject$.next(users)
+  private generateNextId(): number {
+    const users = this.usersSubject$.value
+    if (users.length === 0) {
+      return 1
+    }
+    const maxId = Math.max(...users.map(user => user.id))
+    return maxId + 1
   }
+
 
   deleteUser(id: number): void {
     this.usersSubject$.next(this.usersSubject$.value.filter((user) => user.id !== id))
@@ -29,4 +30,19 @@ export class UsersService {
       this.usersSubject$.next(data)
     })
   }
+
+  updateUser(updateUser: User): void {
+    const updatedUsers = this.usersSubject$.value.map(user =>
+      user.id === updateUser.id ? updateUser : user,
+    )
+    this.usersSubject$.next(updatedUsers)
+  }
+
+  addUser(newUser: User): void {
+    const nextId = this.generateNextId()
+    const newUserWithId = { ...newUser, id: nextId }
+    const currentUsers = this.usersSubject$.value
+    this.usersSubject$.next([...currentUsers, newUserWithId])
+  }
+
 }

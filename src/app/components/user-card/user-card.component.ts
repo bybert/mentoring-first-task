@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core'
+import { Component, EventEmitter, Input, Output } from '@angular/core'
 import { User } from '../../data/interfaces/users.interface'
 import { MatButton, MatFabButton } from '@angular/material/button'
 import { MatCard, MatCardContent } from '@angular/material/card'
@@ -19,7 +19,7 @@ export class UserCardComponent {
     this.deleteUserEvent.emit(user.id)
   }
 
-  public onEditUser(newUser: User): void {
-    this.editUserEvent.emit(this.user)
+  public onEditUser(user: User): void {
+    this.editUserEvent.emit(user)
   }
 }
