@@ -1,8 +1,8 @@
-<h2 mat-dialog-title>Hi, </h2>
+<h2 mat-dialog-title>Hi, {{ data.user.name }} </h2>
 <form [formGroup]="userForm">
   <mat-card>
     <mat-card-header>
-      <h1>{{ isEdit ? 'Edit user' : 'Add user'  }}</h1>
+      <h1>{{ isEdit ? 'Edit user' : 'Add user' }}</h1>
     </mat-card-header>
 
     <mat-card-content>

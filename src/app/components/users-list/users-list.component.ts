@@ -30,26 +30,16 @@ export class UsersListComponent implements OnInit {
     this.usersService.deleteUser(id)
   }
 
-  public openAddDialog(): void {
+  public openDialog(user?: User): void {
     const dialogRef: MatDialogRef<CreateEditUserComponent> = this.dialog.open(CreateEditUserComponent, {
       width: '40%',
-      data: { user: null, isEdit: false },
-    })
-    dialogRef.afterClosed().subscribe((newUser: User) => {
-      if (newUser) {
-        this.usersService.addUser(newUser)
-      }
-    })
-  }
-
-  public openEditDialog(user: User): void {
-    const dialogRef: MatDialogRef<CreateEditUserComponent> = this.dialog.open(CreateEditUserComponent, {
-      width: '40%',
-      data: { user: user, isEdit: true },
+      data: { user: user || {}, isEdit: !!user },
     })
     dialogRef.afterClosed().subscribe((newUser) => {
-      if (newUser) {
+      if (user) {
         this.usersService.updateUser(newUser)
+      } else {
+        this.usersService.addUser(newUser)
       }
     })
   }

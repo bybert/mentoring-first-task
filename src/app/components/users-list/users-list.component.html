@@ -1,5 +1,5 @@
 <div class="usersList">
-  <button (click)="openAddDialog()" mat-raised-button color="primary">Add User</button>
+  <button (click)="openDialog()" mat-raised-button color="primary">Add User</button>
   <h2>Список пользователей:</h2>
 </div>
 
@@ -9,7 +9,7 @@
       <app-user-card
         [user]="user"
         (deleteUserEvent)="onDeleteUser($event)"
-        (editUserEvent)="openEditDialog($event)">
+        (editUserEvent)="openDialog($event)">
       </app-user-card>
     </mat-grid-tile>
   }

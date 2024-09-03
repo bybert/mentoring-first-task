@@ -1,7 +1,8 @@
 import { inject, Injectable } from '@angular/core'
-import { BehaviorSubject } from 'rxjs'
+import { BehaviorSubject, Observable } from 'rxjs'
 import { User } from '../data/interfaces/users.interface'
 import { UsersApiService } from './users-api-service'
+import { LocalStorageService } from './local-storage.service'
 
 @Injectable({
   providedIn: 'root',
@@ -10,39 +11,54 @@ export class UsersService {
   private usersSubject$: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([])
   private userApiService = inject(UsersApiService)
   public readonly users$ = this.usersSubject$.asObservable()
+  private localStorageService = inject(LocalStorageService)
 
   private generateNextId(): number {
-    const users = this.usersSubject$.value
-    if (users.length === 0) {
+    if (this.usersSubject$.value.length === 0) {
       return 1
     }
-    const maxId = Math.max(...users.map(user => user.id))
+    const maxId = Math.max(...this.usersSubject$.value.map(user => user.id))
     return maxId + 1
   }
 
-
-  deleteUser(id: number): void {
-    this.usersSubject$.next(this.usersSubject$.value.filter((user) => user.id !== id))
+  public deleteUser(id: number): void {
+    const updatedUsers = this.usersSubject$.value.filter((user) => user.id !== id)
+    this.usersSubject$.next(updatedUsers)
+    this.localStorageService.setUser(updatedUsers)
   }
 
-  loadUsers(): void {
-    this.userApiService.getUsers().subscribe((data: User[]) => {
-      this.usersSubject$.next(data)
-    })
+  public loadUsers(): void {
+    const localUsers: User[] | null = this.localStorageService.getUser(this.localStorageService.USERS_KEY)
+    if (localUsers) {
+      this.usersSubject$.next(localUsers)
+    } else {
+      this.userApiService.getUsers().subscribe({
+        next: (users: User[]) => {
+          this.usersSubject$.next(users)
+          this.localStorageService.setUser(users)
+        },
+        error: (error) => {
+          console.error('Ошибка при загрузке пользователей:', error)
+        },
+      })
+    }
   }
 
-  updateUser(updateUser: User): void {
-    const updatedUsers = this.usersSubject$.value.map(user =>
-      user.id === updateUser.id ? updateUser : user,
+  public updateUser(updatedUser: User): void {
+    const users: User[] = this.usersSubject$.value || []
+    const updatedUsers: User[] = this.usersSubject$.value.map(user =>
+      user.id === updatedUser.id ? updatedUser : user,
     )
     this.usersSubject$.next(updatedUsers)
+    this.localStorageService.setUser(updatedUsers)
   }
 
-  addUser(newUser: User): void {
-    const nextId = this.generateNextId()
-    const newUserWithId = { ...newUser, id: nextId }
-    const currentUsers = this.usersSubject$.value
-    this.usersSubject$.next([...currentUsers, newUserWithId])
+  public addUser(newUser: User): void {
+    const newUsers: User[] = [
+      ...this.usersSubject$.value,
+      { ...newUser, id: this.generateNextId() },
+    ]
+    this.usersSubject$.next(newUsers)
+    this.localStorageService.setUser(newUsers)
   }
-
 }
