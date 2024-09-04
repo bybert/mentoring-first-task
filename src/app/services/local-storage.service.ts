@@ -8,7 +8,7 @@ import { User } from '../data/interfaces/users.interface'
 export class LocalStorageService {
   public readonly USERS_KEY: string = 'users'
 
-  public getUser(USERS_KEY: string): User[] | null {
+  public getUser(): User[] | null {
     const localUsers: string | null = localStorage.getItem(this.USERS_KEY)
     let result: User[] | null = null
     try {

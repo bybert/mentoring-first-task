@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core'
-import { BehaviorSubject, Observable } from 'rxjs'
+import { BehaviorSubject } from 'rxjs'
 import { User } from '../data/interfaces/users.interface'
 import { UsersApiService } from './users-api-service'
 import { LocalStorageService } from './local-storage.service'
@@ -17,7 +17,7 @@ export class UsersService {
     if (this.usersSubject$.value.length === 0) {
       return 1
     }
-    const maxId = Math.max(...this.usersSubject$.value.map(user => user.id))
+    const maxId = Math.max(...this.usersSubject$.value.map((user) => user.id))
     return maxId + 1
   }
 
@@ -28,7 +28,7 @@ export class UsersService {
   }
 
   public loadUsers(): void {
-    const localUsers: User[] | null = this.localStorageService.getUser(this.localStorageService.USERS_KEY)
+    const localUsers: User[] | null = this.localStorageService.getUser()
     if (localUsers) {
       this.usersSubject$.next(localUsers)
     } else {
@@ -45,19 +45,15 @@ export class UsersService {
   }
 
   public updateUser(updatedUser: User): void {
-    const users: User[] = this.usersSubject$.value || []
-    const updatedUsers: User[] = this.usersSubject$.value.map(user =>
-      user.id === updatedUser.id ? updatedUser : user,
+    const updatedUsers: User[] = this.usersSubject$.value.map((user) =>
+      user.id === updatedUser.id ? updatedUser : user
     )
     this.usersSubject$.next(updatedUsers)
     this.localStorageService.setUser(updatedUsers)
   }
 
   public addUser(newUser: User): void {
-    const newUsers: User[] = [
-      ...this.usersSubject$.value,
-      { ...newUser, id: this.generateNextId() },
-    ]
+    const newUsers: User[] = [...this.usersSubject$.value, { ...newUser, id: this.generateNextId() }]
     this.usersSubject$.next(newUsers)
     this.localStorageService.setUser(newUsers)
   }

@@ -8,7 +8,10 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog'
 import { MatGridList, MatGridTile } from '@angular/material/grid-list'
 import { User } from '../../data/interfaces/users.interface'
 import { ReactiveFormsModule } from '@angular/forms'
-import { Observable } from 'rxjs'
+import { Store } from '@ngrx/store'
+import { initUsers } from '../../state/users/users.actions'
+import { IUsersState } from '../../data/interfaces/usersState.interface'
+import { selectUsers } from '../../state/users/users.selectors'
 
 @Component({
   selector: 'app-users-list',
@@ -19,11 +22,15 @@ import { Observable } from 'rxjs'
 })
 export class UsersListComponent implements OnInit {
   private usersService = inject(UsersService)
-  public readonly users$: Observable<User[]> = this.usersService.users$
+  private store = inject(Store<IUsersState>)
+
+  public readonly users$ = this.store.select(selectUsers)
   private dialog = inject(MatDialog)
 
   ngOnInit() {
+    this.store.dispatch(initUsers())
     this.usersService.loadUsers()
+    console.log(this.store)
   }
 
   public onDeleteUser(id: number): void {
