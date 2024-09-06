@@ -23,18 +23,33 @@ import { MatCard, MatCardContent, MatCardHeader } from '@angular/material/card'
 })
 export class CreateEditUserComponent implements OnInit {
   private readonly fb = new FormBuilder()
-  private readonly dialogRef: MatDialogRef<CreateEditUserComponent> = inject(MatDialogRef<CreateEditUserComponent>)
+  private readonly dialogRef: MatDialogRef<CreateEditUserComponent> =
+    inject(MatDialogRef<CreateEditUserComponent>)
   public data = inject(MAT_DIALOG_DATA)
   public isEdit = this.data.isEdit
 
   public readonly userForm: FormGroup = this.fb.group({
-    id: this.fb.control( null),
-    name: this.fb.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]),
-    username: this.fb.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]),
-    email: this.fb.control('', [Validators.required, Validators.email]),
-    phone: this.fb.control(null, [Validators.required, Validators.minLength(3), Validators.maxLength(20)]),
+    id: this.fb.control(null),
+    name: this.fb.control('',
+      [
+        Validators.required, Validators.minLength(3),
+        Validators.maxLength(30),
+      ]),
+    username: this.fb.control('',
+      [
+        Validators.required, Validators.minLength(3),
+        Validators.maxLength(20),
+      ]),
+    email: this.fb.control('',
+      [
+        Validators.required, Validators.email,
+      ]),
+    phone: this.fb.control(null,
+      [
+        Validators.required, Validators.minLength(3),
+        Validators.maxLength(20),
+      ]),
   })
-
 
   ngOnInit(): void {
     if (this.data.user) {
@@ -49,6 +64,6 @@ export class CreateEditUserComponent implements OnInit {
   }
 
   public onCancel(): void {
-    this.dialogRef.close(this.userForm.value)
+    this.dialogRef.close()
   }
 }

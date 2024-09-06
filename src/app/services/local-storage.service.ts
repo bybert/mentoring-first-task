@@ -8,26 +8,34 @@ import { User } from '../data/interfaces/users.interface'
 export class LocalStorageService {
   public readonly USERS_KEY: string = 'users'
 
-  public getUser(): User[] | null {
-    const localUsers: string | null = localStorage.getItem(this.USERS_KEY)
-    let result: User[] | null = null
+  public setUsers(users: User[]): void {
+    try {
+      localStorage.setItem(this.USERS_KEY, JSON.stringify(users))
+    } catch (error) {
+      console.error('Error saving users to localStorage:', error)
+    }
+  }
+
+  public getUsers(): User[] | null {
+    const localUsers = localStorage.getItem(this.USERS_KEY)
+    let result: User[] | null = []
     try {
       if (localUsers) result = JSON.parse(localUsers)
     } catch (error) {
-      console.error('Ошибка парсинга пользователей из localStorage:', error)
+      console.error('Error parsing users from localStorage:', error)
     }
     return result
   }
 
-  public setUser(users: User[]): void {
-    try {
-      localStorage.setItem(this.USERS_KEY, JSON.stringify(users))
-    } catch (error) {
-      console.error('Ошибка при сохранении данных в localStorage:', error)
+  public removeUser(userId: number): void {
+    const users = this.getUsers()
+    if (!users?.length) {
+      console.error('Users do not exist in localStorage')
+      return
     }
-  }
-
-  public removeUser(): void {
-    localStorage.removeItem(this.USERS_KEY)
+    const updatedUsers = users.filter(
+      (user) => user.id !== userId,
+    )
+    this.setUsers(updatedUsers)
   }
 }

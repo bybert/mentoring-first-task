@@ -4,12 +4,11 @@ import { provideRouter } from '@angular/router'
 import { routes } from './app.routes'
 import { provideHttpClient } from '@angular/common/http'
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async'
-import { provideStore } from '@ngrx/store'
-import { usersReducer, USERS_FEATURE_KEY } from './state/users/users.reducers'
+import { createFeature, provideStore } from '@ngrx/store'
+import { usersFeature } from './state/users/users.reducers'
 import { provideEffects } from '@ngrx/effects'
-import * as userEffects from './state/users/users.effects'
 import { provideStoreDevtools } from '@ngrx/store-devtools'
-
+import * as usersEffects from './state/users/users.effects'
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,7 +16,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideAnimationsAsync(),
     provideStore({
-      [USERS_FEATURE_KEY]: usersReducer,
+      [usersFeature.name]: usersFeature.reducer,
     }),
     provideStoreDevtools({
       maxAge: 25,
@@ -26,6 +25,6 @@ export const appConfig: ApplicationConfig = {
       trace: false,
       traceLimit: 75,
     }),
-    provideEffects(userEffects),
+    provideEffects(usersEffects),
   ],
 }

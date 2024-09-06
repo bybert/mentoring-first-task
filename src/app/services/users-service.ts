@@ -8,53 +8,51 @@ import { LocalStorageService } from './local-storage.service'
   providedIn: 'root',
 })
 export class UsersService {
-  private usersSubject$: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([])
+  public usersSubject$: BehaviorSubject<User[]> =
+    new BehaviorSubject<User[]>([])
   private userApiService = inject(UsersApiService)
   public readonly users$ = this.usersSubject$.asObservable()
-  private localStorageService = inject(LocalStorageService)
+  public localStorageService = inject(LocalStorageService)
 
-  private generateNextId(): number {
-    if (this.usersSubject$.value.length === 0) {
-      return 1
-    }
-    const maxId = Math.max(...this.usersSubject$.value.map((user) => user.id))
+  public generateNewId(users: User[]): number {
+    const maxId = users.reduce(
+      (max, user) => (user.id > max ? user.id : max),
+      0
+    );
     return maxId + 1
   }
 
-  public deleteUser(id: number): void {
-    const updatedUsers = this.usersSubject$.value.filter((user) => user.id !== id)
-    this.usersSubject$.next(updatedUsers)
-    this.localStorageService.setUser(updatedUsers)
-  }
-
   public loadUsers(): void {
-    const localUsers: User[] | null = this.localStorageService.getUser()
+    const localUsers: User[] | null = this.localStorageService.getUsers()
     if (localUsers) {
       this.usersSubject$.next(localUsers)
     } else {
       this.userApiService.getUsers().subscribe({
         next: (users: User[]) => {
           this.usersSubject$.next(users)
-          this.localStorageService.setUser(users)
+          this.localStorageService.setUsers(users)
         },
-        error: (error) => {
-          console.error('Ошибка при загрузке пользователей:', error)
+        error: error => {
+          console.error('Error loading users:', error)
         },
       })
     }
   }
 
   public updateUser(updatedUser: User): void {
-    const updatedUsers: User[] = this.usersSubject$.value.map((user) =>
-      user.id === updatedUser.id ? updatedUser : user
+    const updatedUsers = this.usersSubject$.value.map(user =>
+      user.id === updatedUser.id ? updatedUser : user,
     )
     this.usersSubject$.next(updatedUsers)
-    this.localStorageService.setUser(updatedUsers)
+    this.localStorageService.setUsers(updatedUsers)
   }
 
-  public addUser(newUser: User): void {
-    const newUsers: User[] = [...this.usersSubject$.value, { ...newUser, id: this.generateNextId() }]
-    this.usersSubject$.next(newUsers)
-    this.localStorageService.setUser(newUsers)
+  public addUser(user: User): void {
+    const updatedUsers = [
+      ...this.usersSubject$.value,
+      { ...user, id: this.generateNewId(this.usersSubject$.value) }
+    ];
+    this.usersSubject$.next(updatedUsers);
+    this.localStorageService.setUsers(updatedUsers);
   }
 }
