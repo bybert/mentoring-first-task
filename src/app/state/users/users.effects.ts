@@ -1,6 +1,6 @@
 import { Actions, createEffect, ofType } from '@ngrx/effects'
 import { inject } from '@angular/core'
-import { catchError, map, of, switchMap, tap, withLatestFrom } from 'rxjs'
+import { catchError, map, of, switchMap, withLatestFrom } from 'rxjs'
 import { UsersApiService } from '../../services/users-api-service'
 import {
   addUser, deleteUser, deleteUserFailure,
@@ -56,7 +56,6 @@ export const addUserEffect$ = createEffect(() => {
       const newUser = { ...user, id: newId }
 
       const updatedUsers = [...storedUsers, newUser]
-      // store.dispatch(loadUsersSuccess({ users: updatedUsers }))
       localStorageService.setUsers(updatedUsers)
       return of(addUserSuccess({ user: newUser }))
     }),

@@ -46,7 +46,8 @@ export class UsersListComponent implements OnInit {
   }
 
   public openDialog(user?: User): void {
-    const dialogRef: MatDialogRef<CreateEditUserComponent> = this.dialog.open(CreateEditUserComponent, {
+    const dialogRef: MatDialogRef<CreateEditUserComponent> =
+      this.dialog.open(CreateEditUserComponent, {
       width: '40%',
       data: { user: user || {}, isEdit: !!user },
     })
